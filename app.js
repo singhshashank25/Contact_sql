@@ -1,17 +1,16 @@
 const express = require('express');
 const app = express();
-
-
-
+const db = require("./config/mysqldb")
+const rounteridentify = require("./router/identify")
+require("dotenv").config();
 app.use(express.json());
 
-app.post("/identify",(req,res)=>{
-    const email = req.body.email;
-    const number = req.body.email;
 
-    res.send("done");
-})
+db.query('SELECT 1').then(()=>{
+    console.log("Database connected .....");
+}).catch((error)=>console.log(error));
 
+app.use('/identify',rounteridentify);
 
 const port = 3000;
 app.listen(port,()=>{
