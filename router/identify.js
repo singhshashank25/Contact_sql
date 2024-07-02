@@ -15,12 +15,15 @@ router.post("/",async(req,res)=>{
         let phoneNumbersAll = [],primarycontact = data[0].insertId,secondaryNumber = [],emailsAll = [];
        
       let existingContacts = [];
+      let emlist = [],phonelist = [];
       if (email) {
-        [existingContacts] = await db.execute('SELECT * FROM contacts WHERE email = ?', [email]);
+        [emlist] = await db.execute('SELECT * FROM contacts WHERE email = ?', [email]);
       } if (phoneNumber) {
-        [existingContacts] = await db.execute('SELECT * FROM contacts WHERE phoneNumber = ?', [phoneNumber]);
+        [phonelist] = await db.execute('SELECT * FROM contacts WHERE phoneNumber = ?', [phoneNumber]);
       }
+      existingContacts = [...emlist,...phonelist];
       existingContacts.forEach((ele)=>{
+        console.log(ele);
         primarycontact = Math.min(ele.id,primarycontact);
         phoneNumbersAll.push(ele.phoneNumber);
         emailsAll.push(ele.email);
